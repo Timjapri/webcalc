@@ -15,6 +15,7 @@
     background-color: black;
     border: 1px gray solid;
     border-radius: 5px;
+    margin: 0px auto;
 }
 .display{
     padding: 10px;
@@ -38,7 +39,6 @@
 .cright{
     display: flex;
     flex-direction: column;
-    width: 74px;
 }
 .yelbut{
     background-color: rgb(255, 162, 0);
@@ -84,8 +84,8 @@
     text-align: center;
     display: inline-block;
     border-radius: 100px;
-    margin: 5px 0 10px 0;
-    width: 48%;
+    margin: 5px;
+    width: 47%;
     height: 60px;
 }
 #equal{
@@ -95,7 +95,7 @@
     text-align: center;
     display: inline-block;
     border-radius: 100px;
-    margin: 5px 0 10px 0;
-    width: 48%;
+    margin: 5px;
+    width: 47%;
     height: 60px;
 }
