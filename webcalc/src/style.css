@@ -1,0 +1,101 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    color: white;
+    background-color: black;
+    font-size: 35px;
+}
+
+.calc-cont{
+    padding: 10px;
+    height: 100%;
+    width: 390px;
+    background-color: black;
+    border: 1px gray solid;
+    border-radius: 5px;
+}
+.display{
+    padding: 10px;
+    height: 230px;
+    background-color: grey;
+}
+.buttons{
+    padding: 10px;
+    padding-top: 20px;
+}
+.top{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.cleft{
+    display: flex;
+    flex-direction: column;
+    padding: 4px;
+}
+.cright{
+    display: flex;
+    flex-direction: column;
+    width: 74px;
+}
+.yelbut{
+    background-color: rgb(255, 162, 0);
+    border: 1px solid rgb(255, 162, 0);
+    padding: 5px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 100px;
+    margin: 5px 0 10px 0;
+    width: 74px;
+    height: 74px;
+}
+.graybut{
+    background-color: gray;
+    border: 1px solid gray;
+    padding: 5px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 100px;
+    margin: 5px 0 10px 0;
+    width: 74px;
+    height: 74px;
+}
+.browbut{
+    background-color: rgba(165, 42, 42, 0.759);
+    border: 1px solid rgba(165, 42, 42, 0.759);
+    padding: 5px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 100px;
+    margin: 5px 0 10px 0;
+    width: 74px;
+    height: 74px;
+}
+.bottom{
+    text-align: center;
+    justify-content: space-between;
+}
+#zero{
+    background-color: gray;
+    border: 1px solid gray;
+    padding: 5px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 100px;
+    margin: 5px 0 10px 0;
+    width: 48%;
+    height: 60px;
+}
+#equal{
+    background-color: rgb(255, 162, 0);
+    border: 1px solid rgb(255, 162, 0);
+    padding: 5px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 100px;
+    margin: 5px 0 10px 0;
+    width: 48%;
+    height: 60px;
+}
