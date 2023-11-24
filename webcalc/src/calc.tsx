@@ -1,11 +1,15 @@
 import './style.css';
 
 function calc() {
+  let history = [3];
+
   return (
     <div className="App">
       <div className="calc-cont">
       <div className="display">
-        <div className=""></div>
+        <input type="text" className="disp history" id="History0"/>
+        <input type="text" className="disp current" id="current"/>
+        
       </div>
       <div className="buttons">
         <div className="top">
