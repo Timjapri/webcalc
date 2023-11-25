@@ -19,10 +19,15 @@ function Calc() {
     setCurrentInput((prevInput) => prevInput.slice(0, -1));
   };
   
+  const clear = () => {
+    setCurrentInput('');
+  };
+
   const handleButtonClick = (input: string) => {
     // If the current input is a symbol, clear the text box
-    if (/[+\-*/]/.test(currentInput)) {
+    if (/[\/\-\+x]/.test(currentInput)) {
       setCurrentInput(input);
+      setSymbol(currentInput);
     } else {
       setCurrentInput((prevInput) => prevInput + input);
     }
@@ -31,11 +36,10 @@ function Calc() {
   const handleSymbolButtonClick = (newSymbol: string) => {
     // If the current input is a number, clear the text box
     if (/\d/.test(currentInput)) {
+      setValue1(currentInput);
       setCurrentInput(newSymbol);
-    } else if (value1 !== '' && /[+\-*/]/.test(currentInput)) {
-      // If there's a value1 and the current input is a symbol, update the symbol
-      setSymbol(newSymbol);
-      setCurrentInput((prevInput) => setValue1(prevInput));
+    } else if (/[\/\-\+x]/.test(currentInput)) {
+      setCurrentInput(newSymbol);
     }
   };
   
@@ -119,7 +123,7 @@ function Calc() {
     <div className="App">
       <div className="calc-cont">
         <div className="display">
-          <input type="text" className="disp history" id="history" value={history.join('\n')} readOnly />
+          <textarea className="disp history" id="history" value={history.join('\n')} readOnly />
           <input type="text" className="disp current" id="current" value={currentInput} readOnly />
         </div>
         <div className="buttons">
