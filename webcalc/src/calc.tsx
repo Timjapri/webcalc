@@ -7,6 +7,15 @@ function Calc() {
   const [value2, setValue2] = useState('');
   const [currentInput, setCurrentInput] = useState('');
   const [history, setHistory] = useState([]);
+  const [showHelpModal, setShowHelpModal] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    category: '',
+    description: '',
+  });
+  const [submitDisabled, setSubmitDisabled] = useState(true);
 
   const handleButtonClick = (value: string) => {
     setCurrentInput((prevInput) => prevInput + value);
@@ -23,7 +32,7 @@ function Calc() {
     setCurrentInput((prevInput) => prevInput.slice(0, -1));
   };
 
-  const handleSymbolButtonClick = (newSymbol: React.SetStateAction<string>) => {
+  const handleSymbolButtonClick = (newSymbol: string) => {
     if (value1 !== '' && symbol === '' && /[0-9]$/.test(currentInput)) {
       setSymbol(newSymbol);
       setCurrentInput((prevInput) => setValue1(prevInput));
@@ -46,25 +55,25 @@ function Calc() {
     }
   };
 
-  const [showHelpModal, setShowHelpModal] = useState(false);
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    category: '',
-    description: '',
-  });
-
-  // Helper function to check if all required fields are filled
-  const areRequiredFieldsFilled = () => {
-    return formData.firstName !== '' && formData.lastName !== '' && formData.email !== '' && formData.category !== '';
-  };
-
-  // Function to handle form submission
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Perform submission logic here
     console.log('Form submitted:', formData);
-    
+
+    // Reset form data and disable the submit button
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      category: '',
+      description: '',
+    });
+
+    // Disable the submit button
+    setSubmitDisabled(true);
+
+    // Close the modal
     setShowHelpModal(false);
   };
 
@@ -76,10 +85,26 @@ function Calc() {
     setShowHelpModal(false);
   };
 
-  const handleInputChange = (e: { target: { name: any; value: any; }; }) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-  };
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value, type } = e.target;
+    console.log('Event:', e);
+    console.log('Name:', name);
+    console.log('Value:', value);
+    console.log('Type:', type);
+  
+    // For radio buttons, set the value directly without modifying it
+    setFormData((prevFormData) => ({ ...prevFormData, [name]: type === 'radio' ? value : value }));
+  
+    // Check if all required fields are filled (excluding the description)
+    const areFilled =
+      formData.firstName.trim() !== '' &&
+      formData.lastName.trim() !== '' &&
+      formData.email.trim() !== '' &&
+      formData.category.trim() !== '';
+  
+    // Enable the submit button if all required fields are filled
+    setSubmitDisabled(!areFilled);
+  };  
 
   return (
     <div className="App">
@@ -203,7 +228,7 @@ function Calc() {
                   <textarea name="description" value={formData.description} onChange={handleInputChange}></textarea>
                 </div>
               </div>
-              <button className='send' type="submit" disabled={!areRequiredFieldsFilled()}>Submit</button>
+              <button className='send' type="submit" disabled={submitDisabled}>Submit</button>
             </form>
           </div>
         </div>
