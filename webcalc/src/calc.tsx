@@ -24,7 +24,6 @@ function Calc() {
   };
 
   const handleButtonClick = (input: string) => {
-    // If the current input is a symbol, clear the text box
     if (/[\/\-\+x]/.test(currentInput)) {
       setCurrentInput(input);
       setSymbol(currentInput);
@@ -34,7 +33,6 @@ function Calc() {
   };
   
   const handleSymbolButtonClick = (newSymbol: string) => {
-    // If the current input is a number, clear the text box
     if (/\d/.test(currentInput)) {
       setValue1(currentInput);
       setCurrentInput(newSymbol);
@@ -71,11 +69,9 @@ function Calc() {
   
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Perform submission logic here
+
     console.log('Form submitted:', formData);
 
-    // Reset form data and disable the submit button
     setFormData({
       firstName: '',
       lastName: '',
@@ -83,11 +79,8 @@ function Calc() {
       category: '',
       description: '',
     });
-
-    // Disable the submit button
     setSubmitDisabled(true);
 
-    // Close the modal
     setShowHelpModal(false);
   };
 
@@ -102,20 +95,16 @@ function Calc() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
 
-    // For radio buttons, set the value directly without modifying it
     setFormData((prevFormData) => ({ ...prevFormData, [name]: type === 'radio' ? value : value }));
 
-    // Check if the category is filled
     const isCategoryFilled = formData.category.trim() !== '';
 
-    // Check if all required fields (excluding the description) are filled
     const areFilled =
       isCategoryFilled &&
       formData.firstName.trim() !== '' &&
       formData.lastName.trim() !== '' &&
       formData.email.trim() !== '';
 
-    // Enable the submit button if all required fields are filled
     setSubmitDisabled(!areFilled);
   };
 
@@ -213,18 +202,18 @@ function Calc() {
                 <div className='popleft'>
                   <div className='rows'>
                     <div className='column'>
-                      <p className='formtex'>First Name</p>
+                      <p className='formtex'>First Name*</p>
                       <input type="text" name="firstName" className='formtext' value={formData.firstName} onChange={handleInputChange} required />
                     </div>
                     <div className='column'>
-                      <p className='formtex'>Last Name</p>
+                      <p className='formtex'>Last Name*</p>
                       <input type="text" name="lastName" className='formtext' value={formData.lastName} onChange={handleInputChange} required />
                     </div>
                   </div>
-                  <p className='formtex'>Email</p>
+                  <p className='formtex'>Email*</p>
                   <input type="email" name="email" className='formtext' value={formData.email} onChange={handleInputChange} required />
 
-                  <p className='formtex'>Category</p>
+                  <p className='formtex'>Category*</p>
                   <div className='box'>
                     <div className='column'>
                       <div className='rows'>

@@ -91,6 +91,9 @@
     width: 74px;
     height: 74px;
 }
+.yelbut:hover,.graybut:hover,.browbut:hover,.send:hover{
+    opacity: 75%;
+}
 .bottom{
     text-align: center;
     justify-content: space-between;
@@ -194,12 +197,17 @@ form {
     padding: 10px;
     padding-left: 0px;
 }
+/* .required{
+    color: red;
+    width: auto;
+} */
+
 .formte {
     text-align: left;
     font-size: 20px;
     padding: 10px;
 }
-  
+
 .formtext, input[type=email] {
     width: 100%;
     margin-bottom: 10px;
