@@ -22,10 +22,6 @@ function Calc() {
       setCurrentInput((prevInput) => prevInput.slice(0, -1));
     }
   };
-  
-  const clear = () => {
-    setCurrentInput('');
-  };
 
   const handleButtonClick = (input: string) => {
 
@@ -99,9 +95,9 @@ function Calc() {
       }
     }
   };
-  
+
   const [showHelpModal, setShowHelpModal] = useState(false);
-  const [formData, setFormData] = useState({
+  let [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
