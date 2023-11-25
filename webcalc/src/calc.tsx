@@ -2,11 +2,11 @@ import React, { SetStateAction, useState } from 'react';
 import './style.css';
 
 function Calc() {
-  const [value1, setValue1] = useState('');
-  const [symbol, setSymbol] = useState('');
-  const [value2, setValue2] = useState('');
-  const [currentInput, setCurrentInput] = useState('');
-  const [history, setHistory] = useState([]);
+  let [value1, setValue1] = useState('');
+  let [symbol, setSymbol] = useState('');
+  let [value2, setValue2] = useState('');
+  let [currentInput, setCurrentInput] = useState('');
+  const [history, setHistory] = useState(['']);
   
   const handleClearButtonClick = () => {
     setValue1('');
@@ -16,7 +16,11 @@ function Calc() {
   };
   
   const handleDeleteButtonClick = () => {
-    setCurrentInput((prevInput) => prevInput.slice(0, -1));
+    if(/[\/\-\+x]/.test(currentInput)){
+      setCurrentInput('');
+    }else{
+      setCurrentInput((prevInput) => prevInput.slice(0, -1));
+    }
   };
   
   const clear = () => {
@@ -24,36 +28,75 @@ function Calc() {
   };
 
   const handleButtonClick = (input: string) => {
-    if (/[\/\-\+x]/.test(currentInput)) {
-      setCurrentInput(input);
-      setSymbol(currentInput);
-    } else {
-      setCurrentInput((prevInput) => prevInput + input);
-    }
-  };
-  
-  const handleSymbolButtonClick = (newSymbol: string) => {
-    if (/\d/.test(currentInput)) {
-      setValue1(currentInput);
-      setCurrentInput(newSymbol);
-    } else if (/[\/\-\+x]/.test(currentInput)) {
-      setCurrentInput(newSymbol);
-    }
-  };
-  
-  const handleEqualButtonClick = () => {
-    try {
-      if (value1 !== '' && symbol !== '' && /[0-9]$/.test(currentInput)) {
-        setValue2(currentInput);
-        const result = eval(`${value1} ${symbol} ${value2}`);
-        setHistory((prevHistory) => [...prevHistory, `${value1} ${symbol} ${value2} = ${result}`]) as unknown as SetStateAction<string[]>;
-        setValue1(result.toString());
-        setSymbol('');
-        setValue2('');
-        setCurrentInput(result.toString());
+
+    if(/\d/.test(input)){
+      if(value1 == '' && symbol == ''){
+        setCurrentInput((prevInput) => prevInput + input);
+      }else{
+        if(currentInput != '' && !/\d/.test(currentInput)){
+          setCurrentInput('');
+        }
+        setCurrentInput((prevInput) => prevInput + input);
       }
-    } catch (error) {
-      setCurrentInput('Error');
+    }else{
+      if(/[\/\-\+x]/.test(input)){
+        if(value1 == '' && symbol == '' && currentInput != ''){
+          setValue1(currentInput);
+          setSymbol(input);
+          setCurrentInput(input);
+        }else if(/[\/\-\+x]/.test(currentInput)){
+          setSymbol(input);
+          setCurrentInput(input);
+        }else {
+          value2 = currentInput;
+          setCurrentInput('');
+          switch(symbol){
+            case 'x':
+              value1 = (parseInt(value1) * parseInt(value2)).toString();
+              break;
+            case '/':
+              value1 = (parseInt(value1) / parseInt(value2)).toString();
+              break;
+            case '+':
+              value1 = (parseInt(value1) + parseInt(value2)).toString();
+              break;
+            case '-':
+              value1 = (parseInt(value1) - parseInt(value2)).toString();
+              break;
+          }
+          setValue1(value1);
+          setHistory(current => [...current, value1]);
+          setValue2('');
+          setCurrentInput(input);
+          setSymbol(input);
+          console.log(value1);
+        }
+      }else if(input == '='){
+        value2 = currentInput;
+        setCurrentInput('');
+        switch(symbol){
+          case 'x':
+            value1 = (parseInt(value1) * parseInt(value2)).toString();
+            break;
+          case '/':
+            value1 = (parseInt(value1) / parseInt(value2)).toString();
+            break;
+          case '+':
+            value1 = (parseInt(value1) + parseInt(value2)).toString();
+            break;
+          case '-':
+            value1 = (parseInt(value1) - parseInt(value2)).toString();
+            break;
+        }
+        setCurrentInput(value1);
+        setHistory(current => [...current, value1]);
+        value1 = '';
+        value2 = '';
+        symbol = '';
+        setValue1('');
+        setValue2('');
+        setSymbol('');
+      }
     }
   };
   
@@ -164,16 +207,16 @@ function Calc() {
               </div>
             </div>
             <div className="cright">
-              <button type="button" onClick={() => handleSymbolButtonClick('/')} id="divide" className="yelbut">
+              <button type="button" onClick={() => handleButtonClick('/')} id="divide" className="yelbut">
                 /
               </button>
-              <button type="button" onClick={() => handleSymbolButtonClick('x')} id="multiply" className="yelbut">
+              <button type="button" onClick={() => handleButtonClick('x')} id="multiply" className="yelbut">
                 x
               </button>
-              <button type="button" onClick={() => handleSymbolButtonClick('-')} id="minus" className="yelbut">
+              <button type="button" onClick={() => handleButtonClick('-')} id="minus" className="yelbut">
                 -
               </button>
-              <button type="button" onClick={() => handleSymbolButtonClick('+')} id="add" className="yelbut">
+              <button type="button" onClick={() => handleButtonClick('+')} id="add" className="yelbut">
                 +
               </button>
             </div>
@@ -182,7 +225,7 @@ function Calc() {
             <button type="button" onClick={() => handleButtonClick('0')} id="zero" className="graybut">
               0
             </button>
-            <button type="button" onClick={handleEqualButtonClick} id="equal" className="yelbut">
+            <button type="button" onClick={() => handleButtonClick('=')} id="equal" className="yelbut">
               =
             </button>
           </div>
