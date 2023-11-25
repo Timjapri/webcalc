@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
 import './style.css';
 
 function Calc() {
@@ -7,44 +7,44 @@ function Calc() {
   const [value2, setValue2] = useState('');
   const [currentInput, setCurrentInput] = useState('');
   const [history, setHistory] = useState([]);
-  const [showHelpModal, setShowHelpModal] = useState(false);
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    category: '',
-    description: '',
-  });
-  const [submitDisabled, setSubmitDisabled] = useState(true);
-
-  const handleButtonClick = (value: string) => {
-    setCurrentInput((prevInput) => prevInput + value);
-  };
-
+  
   const handleClearButtonClick = () => {
     setValue1('');
     setSymbol('');
     setValue2('');
     setCurrentInput('');
   };
-
+  
   const handleDeleteButtonClick = () => {
     setCurrentInput((prevInput) => prevInput.slice(0, -1));
   };
-
+  
+  const handleButtonClick = (input: string) => {
+    // If the current input is a symbol, clear the text box
+    if (/[+\-*/]/.test(currentInput)) {
+      setCurrentInput(input);
+    } else {
+      setCurrentInput((prevInput) => prevInput + input);
+    }
+  };
+  
   const handleSymbolButtonClick = (newSymbol: string) => {
-    if (value1 !== '' && symbol === '' && /[0-9]$/.test(currentInput)) {
+    // If the current input is a number, clear the text box
+    if (/\d/.test(currentInput)) {
+      setCurrentInput(newSymbol);
+    } else if (value1 !== '' && /[+\-*/]/.test(currentInput)) {
+      // If there's a value1 and the current input is a symbol, update the symbol
       setSymbol(newSymbol);
       setCurrentInput((prevInput) => setValue1(prevInput));
     }
   };
-
+  
   const handleEqualButtonClick = () => {
     try {
       if (value1 !== '' && symbol !== '' && /[0-9]$/.test(currentInput)) {
-        setValue2(currentInput.replace(value1 + symbol, ''));
+        setValue2(currentInput);
         const result = eval(`${value1} ${symbol} ${value2}`);
-        setHistory((prevHistory) => [...prevHistory, `${value1} ${symbol} ${value2} = ${result}`]);
+        setHistory((prevHistory) => [...prevHistory, `${value1} ${symbol} ${value2} = ${result}`]) as unknown as SetStateAction<string[]>;
         setValue1(result.toString());
         setSymbol('');
         setValue2('');
@@ -54,10 +54,20 @@ function Calc() {
       setCurrentInput('Error');
     }
   };
-
+  
+  const [showHelpModal, setShowHelpModal] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    category: '',
+    description: '',
+  });
+  const [submitDisabled, setSubmitDisabled] = useState(true);
+  
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     // Perform submission logic here
     console.log('Form submitted:', formData);
 
@@ -87,24 +97,20 @@ function Calc() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
-    console.log('Event:', e);
-    console.log('Name:', name);
-    console.log('Value:', value);
-    console.log('Type:', type);
-  
+
     // For radio buttons, set the value directly without modifying it
     setFormData((prevFormData) => ({ ...prevFormData, [name]: type === 'radio' ? value : value }));
-  
+
     // Check if the category is filled
     const isCategoryFilled = formData.category.trim() !== '';
-  
+
     // Check if all required fields (excluding the description) are filled
     const areFilled =
       isCategoryFilled &&
       formData.firstName.trim() !== '' &&
       formData.lastName.trim() !== '' &&
       formData.email.trim() !== '';
-  
+
     // Enable the submit button if all required fields are filled
     setSubmitDisabled(!areFilled);
   };
@@ -126,7 +132,7 @@ function Calc() {
                 <button type="button" onClick={handleDeleteButtonClick} className="graybut">
                   Del
                 </button>
-                <button type="button" onClick={showHelp}  id="help" className="browbut">
+                <button type="button" onClick={showHelp} id="help" className="browbut">
                   ?
                 </button>
               </div>
@@ -183,7 +189,7 @@ function Calc() {
             <button type="button" onClick={() => handleButtonClick('0')} id="zero" className="graybut">
               0
             </button>
-            <button type="button" onClick={handleEqualButtonClick}  id="equal" className="yelbut">
+            <button type="button" onClick={handleEqualButtonClick} id="equal" className="yelbut">
               =
             </button>
           </div>
@@ -193,7 +199,9 @@ function Calc() {
       {showHelpModal && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={closeHelpModal}>&times;</span>
+            <span className="close" onClick={closeHelpModal}>
+              &times;
+            </span>
             <p className='title'>Support Ticket Form</p>
 
             <form onSubmit={handleFormSubmit}>
@@ -201,37 +209,39 @@ function Calc() {
                 <div className='popleft'>
                   <div className='rows'>
                     <div className='column'>
-                      <p className='formtex' >First Name</p>
+                      <p className='formtex'>First Name</p>
                       <input type="text" name="firstName" className='formtext' value={formData.firstName} onChange={handleInputChange} required />
                     </div>
                     <div className='column'>
-                      <p className='formtex' >Last Name</p>
-                      <input type="text" name="lastName" className='formtext'  value={formData.lastName} onChange={handleInputChange} required />
+                      <p className='formtex'>Last Name</p>
+                      <input type="text" name="lastName" className='formtext' value={formData.lastName} onChange={handleInputChange} required />
                     </div>
                   </div>
-                  <p className='formtex' >Email</p>
-                  <input type="email" name="email" className='formtext'  value={formData.email} onChange={handleInputChange} required />
-                  
-                  <p className='formtex' >Category</p>
+                  <p className='formtex'>Email</p>
+                  <input type="email" name="email" className='formtext' value={formData.email} onChange={handleInputChange} required />
+
+                  <p className='formtex'>Category</p>
                   <div className='box'>
                     <div className='column'>
                       <div className='rows'>
                         <input type="radio" name="category" value="general" onChange={handleInputChange} required />
-                        <p className='formte' >General</p>
+                        <p className='formte'>General</p>
                       </div>
                       <div className='rows'>
                         <input type="radio" name="category" value="bug" onChange={handleInputChange} required />
-                        <p className='formte' >Bug</p>
+                        <p className='formte'>Bug</p>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className='popright'>
-                  <p className='formtex' >Description</p>
+                  <p className='formtex'>Description</p>
                   <textarea name="description" value={formData.description} onChange={handleInputChange}></textarea>
                 </div>
               </div>
-              <button className='send' type="submit" disabled={submitDisabled}>Submit</button>
+              <button className='send' type="submit" disabled={submitDisabled}>
+                Submit
+              </button>
             </form>
           </div>
         </div>
