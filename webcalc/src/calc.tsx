@@ -95,16 +95,19 @@ function Calc() {
     // For radio buttons, set the value directly without modifying it
     setFormData((prevFormData) => ({ ...prevFormData, [name]: type === 'radio' ? value : value }));
   
-    // Check if all required fields are filled (excluding the description)
+    // Check if the category is filled
+    const isCategoryFilled = formData.category.trim() !== '';
+  
+    // Check if all required fields (excluding the description) are filled
     const areFilled =
+      isCategoryFilled &&
       formData.firstName.trim() !== '' &&
       formData.lastName.trim() !== '' &&
-      formData.email.trim() !== '' &&
-      formData.category.trim() !== '';
+      formData.email.trim() !== '';
   
     // Enable the submit button if all required fields are filled
     setSubmitDisabled(!areFilled);
-  };  
+  };
 
   return (
     <div className="App">
