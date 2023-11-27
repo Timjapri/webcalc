@@ -6,7 +6,7 @@ function Calc() {
   let [symbol, setSymbol] = useState('');
   let [value2, setValue2] = useState('');
   let [currentInput, setCurrentInput] = useState('');
-  const [history, setHistory] = useState(['']);
+  const [history, setHistory] = useState<string[]>([]);
   
   const handleClearButtonClick = () => {
     setValue1('');
@@ -26,6 +26,7 @@ function Calc() {
   const handleButtonClick = (input: string) => {
 
     if(/\d/.test(input)){
+      console.log(input);
       if(value1 == '' && symbol == ''){
         setCurrentInput((prevInput) => prevInput + input);
       }else{
@@ -36,6 +37,7 @@ function Calc() {
       }
     }else{
       if(/[\/\-\+x]/.test(input)){
+        console.log(input);
         if(value1 == '' && symbol == '' && currentInput != ''){
           setValue1(currentInput);
           setSymbol(input);
@@ -61,14 +63,21 @@ function Calc() {
               break;
           }
           setValue1(value1);
-          setHistory(current => [...current, value1]);
-          setValue2('');
+          if(history.length === 0){
+            setHistory([value1]);
+          }else{
+            setHistory(current => [...current, value1]);
+          }
+          // setValue2('');
           setCurrentInput(input);
           setSymbol(input);
           console.log(value1);
         }
       }else if(input == '='){
-        value2 = currentInput;
+        console.log(input);
+        if(/[\/\-\+x]/.test(input)){
+          value2 = currentInput;
+        }
         setCurrentInput('');
         switch(symbol){
           case 'x':
@@ -85,13 +94,17 @@ function Calc() {
             break;
         }
         setCurrentInput(value1);
-        setHistory(current => [...current, value1]);
-        value1 = '';
-        value2 = '';
-        symbol = '';
-        setValue1('');
-        setValue2('');
-        setSymbol('');
+        if(history.length === 0){
+          setHistory([value1]);
+        }else if(history.length > 0){
+          setHistory(current => [...current, value1]);
+        }
+        // value1 = '';
+        // value2 = '';
+        // symbol = '';
+        // setValue1('');
+        // setValue2('');
+        // setSymbol('');
       }
     }
   };
