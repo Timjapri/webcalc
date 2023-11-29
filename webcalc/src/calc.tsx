@@ -1,4 +1,4 @@
-import React, { SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import './style.css';
 
 function Calc() {
@@ -68,12 +68,11 @@ function Calc() {
           }else{
             setHistory(current => [...current, value1]);
           }
-          // setValue2('');
           setCurrentInput(input);
           setSymbol(input);
           console.log(value1);
         }
-      }else if(input == '='){
+      }else if(input === '='){
         console.log(input);
         if(/[\/\-\+x]/.test(input)){
           value2 = currentInput;
@@ -99,18 +98,12 @@ function Calc() {
         }else if(history.length > 0){
           setHistory(current => [...current, value1]);
         }
-        // value1 = '';
-        // value2 = '';
-        // symbol = '';
-        // setValue1('');
-        // setValue2('');
-        // setSymbol('');
       }
     }
   };
 
   const [showHelpModal, setShowHelpModal] = useState(false);
-  let [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
@@ -118,11 +111,18 @@ function Calc() {
     description: '',
   });
   const [submitDisabled, setSubmitDisabled] = useState(true);
-  
+  const [ticketNumber, setTicketNumber] = useState<string>('');
+  const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
+
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     console.log('Form submitted:', formData);
+
+    const randomTicketNumber = Math.floor(1000 + Math.random() * 9000).toString();
+
+    setTicketNumber(randomTicketNumber);
+    setFormSubmitted(true);
 
     setFormData({
       firstName: '',
@@ -132,8 +132,6 @@ function Calc() {
       description: '',
     });
     setSubmitDisabled(true);
-
-    setShowHelpModal(false);
   };
 
   const showHelp = () => {
@@ -142,6 +140,15 @@ function Calc() {
 
   const closeHelpModal = () => {
     setShowHelpModal(false);
+    setFormSubmitted(false);
+    setTicketNumber('');
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      category: '',
+      description: '',
+    });
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -248,46 +255,54 @@ function Calc() {
               &times;
             </span>
             <p className='title'>Support Ticket Form</p>
-
-            <form onSubmit={handleFormSubmit}>
-              <div className='cont'>
-                <div className='popleft'>
-                  <div className='rows'>
-                    <div className='column'>
-                      <p className='formtex'>First Name*</p>
-                      <input type="text" name="firstName" className='formtext' value={formData.firstName} onChange={handleInputChange} required />
-                    </div>
-                    <div className='column'>
-                      <p className='formtex'>Last Name*</p>
-                      <input type="text" name="lastName" className='formtext' value={formData.lastName} onChange={handleInputChange} required />
-                    </div>
-                  </div>
-                  <p className='formtex'>Email*</p>
-                  <input type="email" name="email" className='formtext' value={formData.email} onChange={handleInputChange} required />
-
-                  <p className='formtex'>Category*</p>
-                  <div className='box'>
-                    <div className='column'>
-                      <div className='rows'>
-                        <input type="radio" name="category" value="general" onChange={handleInputChange} required />
-                        <p className='formte'>General</p>
-                      </div>
-                      <div className='rows'>
-                        <input type="radio" name="category" value="bug" onChange={handleInputChange} required />
-                        <p className='formte'>Bug</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className='popright'>
-                  <p className='formtex'>Description</p>
-                  <textarea name="description" value={formData.description} onChange={handleInputChange}></textarea>
-                </div>
+            {formSubmitted ? (
+              <div className='thanks'>
+                <p className='thx'>Thank you for sending us your report.</p>
+                <p className='ticket'>Your ticket number is: {ticketNumber}</p>
               </div>
-              <button className='send' type="submit" disabled={submitDisabled}>
-                Submit
-              </button>
-            </form>
+            ) : (
+              <div>
+                <form onSubmit={handleFormSubmit}>
+                  <div className='cont'>
+                    <div className='popleft'>
+                      <div className='rows'>
+                        <div className='column'>
+                          <p className='formtex'>First Name*</p>
+                          <input type="text" name="firstName" className='formtext' value={formData.firstName} onChange={handleInputChange} required />
+                        </div>
+                        <div className='column'>
+                          <p className='formtex'>Last Name*</p>
+                          <input type="text" name="lastName" className='formtext' value={formData.lastName} onChange={handleInputChange} required />
+                        </div>
+                      </div>
+                      <p className='formtex'>Email*</p>
+                      <input type="email" name="email" className='formtext' value={formData.email} onChange={handleInputChange} required />
+
+                      <p className='formtex'>Category*</p>
+                      <div className='box'>
+                        <div className='column'>
+                          <div className='rows'>
+                            <input type="radio" name="category" value="general" onChange={handleInputChange} required />
+                            <p className='formte'>General</p>
+                          </div>
+                          <div className='rows'>
+                            <input type="radio" name="category" value="bug" onChange={handleInputChange} required />
+                            <p className='formte'>Bug</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='popright'>
+                      <p className='formtex'>Description</p>
+                      <textarea name="description" value={formData.description} onChange={handleInputChange}></textarea>
+                    </div>
+                  </div>
+                  <button className='send' type="submit" disabled={submitDisabled}>
+                    Submit
+                  </button>
+                </form>
+              </div>
+            )}
           </div>
         </div>
       )}
