@@ -257,7 +257,7 @@ function Calc() {
             <p className='title'>Support Ticket Form</p>
             {formSubmitted ? (
               <div className='thanks'>
-                <p className='thx'>Thank you for sending us your report.</p>
+                <p className='thx'>Thank you for sending us your report, we will track the problem now</p>
                 <p className='ticket'>Your ticket number is: {ticketNumber}</p>
               </div>
             ) : (
@@ -267,18 +267,18 @@ function Calc() {
                     <div className='popleft'>
                       <div className='rows'>
                         <div className='column'>
-                          <p className='formtex'>First Name*</p>
+                          <p className='formtex'>First Name <strong>*</strong></p>
                           <input type="text" name="firstName" className='formtext' value={formData.firstName} onChange={handleInputChange} required />
                         </div>
                         <div className='column'>
-                          <p className='formtex'>Last Name*</p>
+                          <p className='formtex'>Last Name <strong>*</strong></p>
                           <input type="text" name="lastName" className='formtext' value={formData.lastName} onChange={handleInputChange} required />
                         </div>
                       </div>
-                      <p className='formtex'>Email*</p>
+                      <p className='formtex'>Email <strong>*</strong></p>
                       <input type="email" name="email" className='formtext' value={formData.email} onChange={handleInputChange} required />
 
-                      <p className='formtex'>Category*</p>
+                      <p className='formtex'>Category <strong>*</strong></p>
                       <div className='box'>
                         <div className='column'>
                           <div className='rows'>
@@ -293,7 +293,7 @@ function Calc() {
                       </div>
                     </div>
                     <div className='popright'>
-                      <p className='formtex'>Description</p>
+                      <p className='formtex'>Description <strong className='ds'>Optional</strong></p>
                       <textarea name="description" value={formData.description} onChange={handleInputChange}></textarea>
                     </div>
                   </div>
