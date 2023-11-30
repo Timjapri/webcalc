@@ -168,11 +168,6 @@ strong{
     color: red;
     font-size: 20px;
 }
-.ds{
-    font-size: 15px;
-    opacity: 75%;
-    color: gray;
-}
 
 form {
     display: flex;
@@ -224,8 +219,18 @@ form {
 }
 .ticket{
     text-align: center;
-    font-size: 30px;
+    font-size: 20px;
     padding-bottom: auto;
+}
+.ds{
+    font-size: 15px;
+    opacity: 75%;
+    color: gray;
+}
+.th{
+    font-size: 20px;
+    opacity: 75%;
+    color: gray;
 }
 .formtext, input[type=email] {
     width: 100%;

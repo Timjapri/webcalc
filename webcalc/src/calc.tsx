@@ -258,7 +258,7 @@ function Calc() {
             {formSubmitted ? (
               <div className='thanks'>
                 <p className='thx'>Thank you for sending us your report, we will track the problem now</p>
-                <p className='ticket'>Your ticket number is: {ticketNumber}</p>
+                <p className='ticket'><strong className='th'>Your ticket number is:</strong> {ticketNumber}</p>
               </div>
             ) : (
               <div>
