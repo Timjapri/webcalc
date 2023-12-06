@@ -5,7 +5,6 @@ import './style.css';
 function Support() {
   let redirect= useNavigate();
 
-  const [showHelpModal, setShowHelpModal] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
