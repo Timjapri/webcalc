@@ -122,7 +122,7 @@ function Calc() {
                 <button type="button" onClick={handleDeleteButtonClick} className="graybut">
                   Del
                 </button>
-                <button type="button" onClick={() => {redirect('/support')}} id="help" className="browbut">
+                <button type="button" onClick={() => {redirect('/Support')}} id="help" className="browbut">
                   ?
                 </button>
               </div>
